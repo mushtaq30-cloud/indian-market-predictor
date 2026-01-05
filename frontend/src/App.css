@@ -1,0 +1,835 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========== COLOR VARIABLES ========== */
+:root {
+  /* Light Mode */
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --text-primary: #2d3748;
+  --text-secondary: #718096;
+  --border-color: #e2e8f0;
+  --chart-text: #cbd5e0;
+  
+  /* Dark Mode */
+  --dark-bg-primary: #0a0e27;
+  --dark-bg-secondary: #1a1f3a;
+  --dark-text-primary: #f0f4f8;
+  --dark-text-secondary: #cbd5e0;
+  --dark-border-color: #2d3748;
+  --dark-chart-text: #a0aec0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+body.dark-mode {
+  background: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+.App {
+  min-height: 100vh;
+  padding: 12px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.App.dark-mode {
+  background: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+.app-header {
+  text-align: center;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.App.dark-mode .app-header {
+  color: var(--dark-text-primary);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+}
+
+.app-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+
+.theme-toggle {
+  font-size: 1.4rem;
+  background: transparent;
+  border: 2px solid var(--border-color);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.App.dark-mode .theme-toggle {
+  border-color: var(--dark-border-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.App.dark-mode .theme-toggle:hover {
+  background: rgba(102, 126, 234, 0.2);
+}
+
+.app-header p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.market-indices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 1s ease-out;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+  animation: slideUp 0.6s ease-out;
+  border: 1px solid var(--border-color);
+}
+
+.App.dark-mode .card {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.App.dark-mode .card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.App.dark-mode .card-title {
+  color: var(--dark-text-primary);
+}
+
+.card-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.price-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 8px 0;
+}
+
+.App.dark-mode .price-display {
+  color: var(--dark-text-primary);
+}
+
+.price-unit {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.App.dark-mode .price-unit {
+  color: var(--dark-text-secondary);
+}
+
+.prediction-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin: 6px 0;
+}
+
+.prediction-bullish {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.App.dark-mode .prediction-bullish {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+}
+
+.prediction-bearish {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.App.dark-mode .prediction-bearish {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.prediction-neutral {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.App.dark-mode .prediction-neutral {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fcd34d;
+}
+
+.confidence-bar {
+  margin-top: 6px;
+}
+
+.confidence-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+
+.App.dark-mode .confidence-label {
+  color: var(--dark-text-secondary);
+}
+
+.progress-bar {
+  height: 6px;
+  background: var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.App.dark-mode .progress-bar {
+  background: var(--dark-border-color);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3px;
+  transition: width 1s ease-out;
+}
+
+.index-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.App.dark-mode .index-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.index-card:hover {
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.chatbot-container {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid var(--border-color);
+}
+
+.App.dark-mode .chatbot-container {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.App.dark-mode .chatbot-header {
+  border-bottom-color: var(--dark-border-color);
+}
+
+.chatbot-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.App.dark-mode .chatbot-title {
+  color: var(--dark-text-primary);
+}
+
+.chatbot-messages {
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+}
+
+.App.dark-mode .chatbot-messages {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.message-bubble {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+}
+
+.user-bubble {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 3px;
+}
+
+.bot-bubble {
+  background: var(--border-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-bottom-left-radius: 3px;
+  text-align: left;
+}
+
+.App.dark-mode .bot-bubble {
+  background: var(--dark-border-color);
+  color: var(--dark-text-primary);
+  border-color: var(--dark-border-color);
+}
+
+.chatbot-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  outline: none;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.App.dark-mode .chatbot-input {
+  background: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+  border-color: var(--dark-border-color);
+}
+
+.chatbot-input:focus {
+  border-color: #667eea;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 40px 20px;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.App.dark-mode .app-footer {
+  color: var(--dark-text-secondary);
+}
+
+.index-name {
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+.index-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.index-change {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.change-positive {
+  color: #48bb78;
+}
+
+.change-negative {
+  color: #f56565;
+}
+
+.news-section {
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
+}
+
+.App.dark-mode .news-section {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.news-header {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.App.dark-mode .news-header {
+  color: var(--dark-text-primary);
+}
+
+.news-list {
+  list-style: none;
+}
+
+.news-item {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.App.dark-mode .news-item {
+  border-bottom-color: var(--dark-border-color);
+}
+
+.news-item:hover {
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.App.dark-mode .news-item:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.news-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.App.dark-mode .news-title {
+  color: var(--dark-text-primary);
+}
+
+.news-title:hover {
+  color: #667eea;
+}
+
+.news-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.App.dark-mode .news-meta {
+  color: var(--dark-text-secondary);
+}
+
+.chatbot-container {
+  background: white;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid #e2e8f0;
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.chatbot-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.chatbot-messages {
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #f7fafc;
+  border-radius: 6px;
+}
+
+.message {
+  margin-bottom: 10px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.message-user {
+  text-align: right;
+}
+
+.message-bubble {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+}
+
+.user-bubble {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 3px;
+}
+
+.bot-bubble {
+  background: white;
+  color: #333;
+  border: 1px solid #e2e8f0;
+  border-bottom-left-radius: 3px;
+  text-align: left;
+}
+
+.message-sources {
+  margin-top: 6px;
+  padding: 8px;
+  background: #edf2f7;
+  border-radius: 6px;
+  font-size: 0.75rem;
+}
+
+.source-link {
+  color: #667eea;
+  text-decoration: none;
+  display: block;
+  margin: 3px 0;
+}
+
+.source-link:hover {
+  text-decoration: underline;
+}
+
+.chatbot-input-area {
+  display: flex;
+  gap: 8px;
+}
+
+.chatbot-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chatbot-input:focus {
+  border-color: #667eea;
+}
+
+.chatbot-send-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.chatbot-send-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.chatbot-send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.spinner {
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+}
+
+.sentiment-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: #f7fafc;
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
+.sentiment-icon {
+  font-size: 1.4rem;
+}
+
+.sentiment-details {
+  flex: 1;
+}
+
+.sentiment-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.sentiment-positive {
+  color: #48bb78;
+}
+
+.sentiment-negative {
+  color: #f56565;
+}
+
+.sentiment-neutral {
+  color: #ed8936;
+}
+
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .price-display {
+    font-size: 1.2rem;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}
+
+/* Tomorrow's Forecast Styles */
+.tomorrow-forecast {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  border-left: 3px solid #667eea;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.App.dark-mode .tomorrow-forecast {
+  background: rgba(102, 126, 234, 0.1);
+  border-left-color: #667eea;
+}
+
+.forecast-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.App.dark-mode .forecast-label {
+  color: var(--dark-text-secondary);
+}
+
+.forecast-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+/* Chart Container Styles */
+.chart-container {
+  margin-top: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.App.dark-mode .chart-container {
+  background: rgba(0, 0, 0, 0.2);
+  border-color: var(--dark-border-color);
+}
+
+.chart-container h4 {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+}
+
+.App.dark-mode .chart-container h4 {
+  color: var(--dark-text-primary);
+}
