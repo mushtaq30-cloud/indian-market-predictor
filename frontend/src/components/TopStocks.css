@@ -1,0 +1,262 @@
+.top-stocks-container {
+  grid-column: 1 / -1;
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.top-stocks-container:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.stocks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.stocks-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.market-trend {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.market-trend.bullish {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+.market-trend.bearish {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.stocks-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .stocks-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stocks-section {
+  background: var(--section-bg, transparent);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.section-title {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 0;
+}
+
+.section-title.bullish {
+  color: #22c55e;
+  border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+  padding-bottom: 10px;
+}
+
+.section-title.bearish {
+  color: #ef4444;
+  border-bottom: 2px solid rgba(239, 68, 68, 0.3);
+  padding-bottom: 10px;
+}
+
+.picks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stock-pick {
+  background: var(--pick-bg);
+  border: 1px solid var(--pick-border);
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.2s ease;
+}
+
+.stock-pick.buy {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.stock-pick.buy:hover {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+.stock-pick.sell {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.stock-pick.sell:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+.pick-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.stock-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.symbol {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.name {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+.confidence-badge {
+  background: var(--badge-bg);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.stock-pick.buy .confidence-badge {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.stock-pick.sell .confidence-badge {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.pick-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.target {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.target .label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.target-price {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.target-price.bullish {
+  color: #22c55e;
+}
+
+.target-price.bearish {
+  color: #ef4444;
+}
+
+.reason {
+  margin: 0;
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.no-picks {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding: 16px 8px;
+  margin: 0;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Dark mode adjustments */
+.App.dark-mode .top-stocks-container {
+  background: var(--dark-card-bg);
+  border-color: var(--dark-border-color);
+}
+
+.App.dark-mode .stocks-section {
+  background: var(--dark-section-bg, rgba(255, 255, 255, 0.03));
+  border-color: var(--dark-border-color);
+}
+
+.App.dark-mode .stock-pick {
+  background: var(--dark-pick-bg);
+  border-color: var(--dark-pick-border);
+}
+
+.App.dark-mode .stock-pick.buy {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.25);
+}
+
+.App.dark-mode .stock-pick.sell {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.App.dark-mode .stocks-header {
+  border-bottom-color: var(--dark-border-color);
+}
+
+.App.dark-mode .section-title.bullish {
+  border-bottom-color: rgba(34, 197, 94, 0.25);
+}
+
+.App.dark-mode .section-title.bearish {
+  border-bottom-color: rgba(239, 68, 68, 0.25);
+}
