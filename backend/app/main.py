@@ -152,6 +152,10 @@ async def dashboard():
 
         # Process news for sentiment
         try:
+            # Filter out None values from news lists to prevent errors
+            business_news = [item for item in business_news if item is not None]
+            gold_news = [item for item in gold_news if item is not None]
+            silver_news = [item for item in silver_news if item is not None]
             all_news = business_news + gold_news + silver_news
             sentiment = news_service.compute_sentiment(all_news)
             logger.info("✅ Sentiment computed")
@@ -161,16 +165,20 @@ async def dashboard():
 
         # AI market summary
         try:
+            # Filter news headlines for the AI service as well
+            filtered_news_headlines = [h for h in all_news[:20] if h is not None and hasattr(h, 'get')]
             ai_insights = ai_service.generate_market_insights(
                 gold_data=gold,
                 silver_data=silver,
                 stock_indices={"nifty": nifty, "sensex": sensex},
-                news_headlines=all_news[:20]
+                news_headlines=filtered_news_headlines
             )
             logger.info("✅ AI insights generated")
         except Exception as e:
             logger.error(f"❌ Error generating AI insights: {e}", exc_info=True)
-            raise
+            # Don't raise the error, use a fallback message
+            ai_insights = "Market insights temporarily unavailable due to system processing."
+            logger.info("✅ Used fallback for AI insights")
 
         # Quick predictions using already-fetched data
         try:
@@ -270,6 +278,8 @@ async def dashboard():
 
         # Build response
         try:
+            top_stocks = await stock_recommendations.get_top_stock_picks()
+            
             response_data = {
                 "gold": {
                     "price": gold["price"],
@@ -297,14 +307,14 @@ async def dashboard():
                 "ai_insights": ai_insights,
                 "top_news": [
                     {
-                        "title": n.get("title"),
-                        "source": n.get("source"),
-                        "link": n.get("link"),
-                        "published": str(n.get("published"))
+                        "title": n.get("title") if hasattr(n, 'get') and n is not None else "",
+                        "source": n.get("source") if hasattr(n, 'get') and n is not None else "",
+                        "link": n.get("link") if hasattr(n, 'get') and n is not None else "",
+                        "published": str(n.get("published")) if hasattr(n, 'get') and n is not None else ""
                     }
                     for n in all_news[:10]
                 ],
-                "top_stocks": stock_recommendations.get_top_stock_picks(),
+                "top_stocks": top_stocks,
                 "top_mutual_funds": stock_recommendations.get_top_mutual_funds(),
                 "last_updated": pd.Timestamp.now().isoformat()
             }
