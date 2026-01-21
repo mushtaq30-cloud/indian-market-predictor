@@ -30,15 +30,18 @@ const TopStocks = ({ data }) => {
             {data.top_buys && data.top_buys.length > 0 ? (
               data.top_buys.map((stock, idx) => (
                 <div key={idx} className="stock-pick buy">
+                  <a href={stock.source_link} target="_blank" rel="noopener noreferrer" className="stock-link">
                   <div className="pick-header">
                     <div className="stock-info">
                       <span className="symbol">{stock.symbol.replace('.NS', '')}</span>
                       <span className="name">{stock.name}</span>
+                      <span className="current-price">₹{stock.current_price?.toFixed(2)}</span>
                     </div>
                     <span className="confidence-badge">
                       {stock.confidence}% ✓
                     </span>
                   </div>
+                  </a>
                   <div className="pick-body">
                     <div className="target">
                       <span className="label">Target:</span>
@@ -65,15 +68,18 @@ const TopStocks = ({ data }) => {
             {data.top_sells && data.top_sells.length > 0 ? (
               data.top_sells.map((stock, idx) => (
                 <div key={idx} className="stock-pick sell">
+                  <a href={stock.source_link} target="_blank" rel="noopener noreferrer" className="stock-link">
                   <div className="pick-header">
                     <div className="stock-info">
                       <span className="symbol">{stock.symbol.replace('.NS', '')}</span>
                       <span className="name">{stock.name}</span>
+                      <span className="current-price">₹{stock.current_price?.toFixed(2)}</span>
                     </div>
                     <span className="confidence-badge">
                       {stock.confidence}% ✗
                     </span>
                   </div>
+                  </a>
                   <div className="pick-body">
                     <div className="target">
                       <span className="label">Target:</span>

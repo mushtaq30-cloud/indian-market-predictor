@@ -3,6 +3,8 @@ import pandas as pd
 from datetime import datetime, timedelta
 import logging
 import time
+from typing import Dict, Any
+from . import stock_scraper
 
 logger = logging.getLogger(__name__)
 
@@ -103,6 +105,15 @@ async def fetch_stock_history(symbol: str, days: int = 90):
 async def fetch_current_price(symbol: str):
     """Get current stock/index price with rate limiting"""
     try:
+        # Handle Nifty and Sensex specially with Indian exchange APIs
+        if symbol == "^NSEI":  # Nifty
+            indices_data = await stock_scraper.scrape_nifty_sensex_data()
+            return indices_data.get("nifty")
+        elif symbol == "^BSESN":  # Sensex
+            indices_data = await stock_scraper.scrape_nifty_sensex_data()
+            return indices_data.get("sensex")
+        
+        # For other stocks, use the existing method
         if not symbol.startswith('^') and not symbol.endswith('.NS'):
             symbol = f"{symbol}.NS"
         

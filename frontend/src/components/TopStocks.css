@@ -99,6 +99,7 @@
   border-radius: 8px;
   padding: 10px;
   transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .stock-pick.buy {
@@ -145,6 +146,32 @@
   font-size: 11px;
   color: var(--text-secondary);
   line-height: 1.2;
+}
+
+.current-price {
+  font-size: 11px;
+  color: var(--text-primary);
+  font-weight: 600;
+  background: rgba(74, 85, 104, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.stock-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.stock-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.App.dark-mode .stock-link:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .confidence-badge {
